@@ -105,6 +105,7 @@
 
 var form = document.getElementById('addForm');
 var itemList = document.getElementById('items')
+var filter = document.getElementById('filter')
  
 //form submit event
 form.addEventListener('submit', addItem)
@@ -113,6 +114,9 @@ form.addEventListener('submit', addItem)
 
 itemList.addEventListener('click',removeItem)
 
+//filter item
+filter.addEventListener('keyup',filterItems)
+
 //function
 
 function addItem(e){
@@ -120,6 +124,7 @@ e.preventDefault();
 
 //get input value
 var newItem = document.getElementById('item').value
+var newDes = document.getElementById('description').value
 
 //create li element
 var li = document.createElement('li');
@@ -127,14 +132,16 @@ var li = document.createElement('li');
 li.className = 'list-group-item'
 //add textnode with input value
 li.appendChild(document.createTextNode(newItem))
+li.appendChild(document.createTextNode(newDes))
 
-//create delete button
+
+//create delete and edit button
 
 var deleteBtn = document.createElement('button')
 
 var editBtn = document.createElement('button1')
 
-//add classes to delete btn
+//add classes to delete and edit btn
 
 deleteBtn.className='btn btn-danger btn-sm float-right delete'
 editBtn.className='btn btn-danger btn-sm float-right edit'
@@ -159,4 +166,25 @@ if(confirm('Are you sure?')){
     itemList.removeChild(li)
 }
 }
+}
+
+//filter function
+function filterItems(e){
+var text = e.target.value.toLowerCase();
+// console.log(text)
+//get lis
+var items = itemList.getElementsByTagName('li')
+// console.log(items)
+
+//convert to an array
+Array.from(items).forEach(function(item){
+    var itemName = item.firstChild.textContent
+    var desName = item.childNodes[1].textContent
+    console.log(itemName)
+    if(itemName.toLowerCase().indexOf(text) != -1 || desName.toLowerCase().indexOf(text) != -1 ){
+item.style.display = 'block'
+    }else{
+        item.style.display = 'none'
+    }
+})
 }
